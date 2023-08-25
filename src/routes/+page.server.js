@@ -16,14 +16,16 @@ export async function load({ params }) {
 	const [announcements] = RESPONSE.RESULT;
 	return {
 		params,
-		announcements: announcements.TrainAnnouncement,
+		announcements: announcements.TrainAnnouncement
 	};
 }
 
 function getBody() {
 	const now = Date.now();
-	const since = new Date(now - 30 * 6e4).toISOString();
-	const until = new Date(now + 24 * 60 * 6e4).toISOString();
+	const since = new Date(now).toISOString().substring(0, 10) + 'T03:00:00.000+02:00';
+	const until =
+		new Date(now + 24 * 60 * 6e4).toISOString().substring(0, 10) + 'T03:00:00.000+02:00';
+	console.log(since, until);
 	return `
 <REQUEST>
   <LOGIN authenticationkey='${process.env.TRAFIKVERKET_API_KEY}' />
@@ -35,10 +37,7 @@ function getBody() {
             <EQ name='ActivityType' value='Avgang' />
             <EQ name='LocationSignature' value='Tul' />
         	<LIKE name='AdvertisedTrainIdent' value='/[02468]$/' />
-            <OR>
-               <GT name='AdvertisedTimeAtLocation' value='${since}' />
-               <GT name='EstimatedTimeAtLocation' value='${since}' />
-            </OR>
+		   	<GT name='AdvertisedTimeAtLocation' value='${since}' />
             <LT name='AdvertisedTimeAtLocation' value='${until}' />
          </AND>
       </FILTER>
