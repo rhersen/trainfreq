@@ -1,5 +1,6 @@
 <script>
 	import slices from '$lib/slices.js';
+	import { color } from '$lib/delay.js';
 
 	export let data;
 </script>
@@ -9,11 +10,11 @@
 {#each Object.entries(slices(data)) as [hour, announcements]}
 	<div>
 		<span class="hour">{hour.substring(11)}</span>
-		<span
-			>{announcements
-				.map(({ AdvertisedTimeAtLocation }) => AdvertisedTimeAtLocation.substring(14, 16))
-				.join(' ')}
-		</span>
+		{#each announcements as announcement}
+			<span style="background-color: {color(announcement)}">
+				{announcement.AdvertisedTimeAtLocation.substring(14, 16) + ' '}
+			</span>
+		{/each}
 	</div>
 {/each}
 
