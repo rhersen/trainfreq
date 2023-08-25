@@ -6,13 +6,24 @@
 
 <h1>Tullinge, norrgående</h1>
 
-<ul>
-	{#each Object.entries(slices(data)) as [hour, announcements]}
-		<li>
-			{hour}
-			{announcements
-				.map(({ ToLocation }) => ToLocation.map(({ LocationName }) => LocationName))
+{#each Object.entries(slices(data)) as [hour, announcements]}
+	<div>
+		<span class="hour">{hour.substring(11)}</span>
+		<span
+			>{announcements
+				.map(({ AdvertisedTimeAtLocation }) => AdvertisedTimeAtLocation.substring(14, 16))
 				.join(' ')}
-		</li>
-	{/each}
-</ul>
+		</span>
+	</div>
+{/each}
+
+<style>
+	div,
+	h1 {
+		font-family: sans-serif;
+	}
+
+	.hour {
+		font-weight: bold;
+	}
+</style>
