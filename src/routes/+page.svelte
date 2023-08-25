@@ -1,11 +1,18 @@
 <script>
+	import slices from '$lib/slices.js';
+
 	export let data;
 </script>
 
-<h1>trainfreq</h1>
+<h1>Tullinge, norrgående</h1>
 
-<ol>
-	{#each data.announcements as { AdvertisedTimeAtLocation, ToLocation }}
-		<li>{AdvertisedTimeAtLocation.substring(5, 16)} {ToLocation[0].LocationName}</li>
+<ul>
+	{#each Object.entries(slices(data)) as [hour, announcements]}
+		<li>
+			{hour}
+			{announcements
+				.map(({ ToLocation }) => ToLocation.map(({ LocationName }) => LocationName))
+				.join(' ')}
+		</li>
 	{/each}
-</ol>
+</ul>
